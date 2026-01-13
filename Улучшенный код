@@ -1,0 +1,62 @@
+#include <iostream>
+#include <sstream>
+#include <string>
+
+using namespace std;
+
+class MeterReading {
+public:
+    string resource_type;
+    string date;
+    double value;
+
+    void Print() const {
+        cout << "Тип ресурса: " << resource_type << endl;
+        cout << "Дата: " << date << endl;
+        cout << "Значение: " << value << endl;
+    }
+};
+
+string ReadInputLine() {
+    cout << "Введите показания счетчика ([MeterReading] \"[Тип ресурса]\" [Дата] [Значение])\n";
+    string line;
+    getline(cin, line);
+    return line;
+}
+
+string ParseObjectType(stringstream& ss) {
+    string object_type;
+    ss >> object_type;
+    return object_type;
+}
+
+string ParseQuotedString(stringstream& ss) {
+    string result;
+    ss >> ws;
+    getline(ss, result, '"');
+    getline(ss, result, '"');
+    return result;
+}
+
+MeterReading ParseMeterReading(stringstream& ss) {
+    MeterReading reading;
+    reading.resource_type = ParseQuotedString(ss);
+    ss >> reading.date;
+    ss >> reading.value;
+    return reading;
+}
+
+int main() {
+    setlocale(LC_ALL, "rus");
+    string input_line = ReadInputLine();
+    stringstream ss(input_line);
+
+    string object_type = ParseObjectType(ss);
+
+    if (object_type == "MeterReading") {
+        MeterReading reading = ParseMeterReading(ss);
+        reading.Print();
+    }
+
+    return 0;
+}

@@ -1,0 +1,45 @@
+#include <iostream>
+#include <sstream>
+#include <string>
+
+using namespace std;
+
+class MeterReading {
+public:
+    string resourceType; 
+    string date;         
+    double value;        
+
+    void print() const {
+        cout << "Тип ресурса: " << resourceType << endl;
+        cout << "Дата: " << date << endl;
+        cout << "Значение: " << value << endl;
+    }
+};
+
+int main() {
+    setlocale(LC_ALL, "rus");
+    cout << "Введите показания счетчика ([MeterReading] \"[Тип ресурса]\" [Дата][Значение])\n";
+    string inputLine;
+    getline(cin, inputLine);
+
+    stringstream ss(inputLine);
+
+    string objectType;
+    ss >> objectType; 
+
+    if (objectType == "MeterReading") {
+        MeterReading reading;
+
+        ss >> ws; 
+        getline(ss, reading.resourceType, '"');
+        getline(ss, reading.resourceType, '"');
+
+        ss >> reading.date;
+        ss >> reading.value;
+
+        reading.print();
+    }
+
+    return 0;
+}
